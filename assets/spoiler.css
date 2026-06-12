@@ -1,0 +1,10 @@
+/* ═══════════════════════════════════════════════
+   spoiler.css — specific to projects/spoiler.html
+   Requires: base.css + project-shared.css
+   ═══════════════════════════════════════════════ */
+
+/* ── h3 dot color variants + no-dot ── */
+.project-section h3.dot-filter::before { border-color: var(--accent); background: var(--accent-subtle); }
+.project-section h3.dot-output::before { border-color: var(--olive);  background: var(--olive-subtle); }
+.project-section h3.no-dot { gap: 0; }
+.project-section h3.no-dot::before { display: none; }

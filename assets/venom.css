@@ -1,0 +1,121 @@
+/* ═══════════════════════════════════════════════
+   venom.css — specific to projects/venom.html
+   Requires: base.css + project-shared.css
+   ═══════════════════════════════════════════════ */
+
+/* ── h3 dot color variants ── */
+.project-section h3.dot-filter::before { border-color: var(--accent); background: var(--accent-subtle); }
+.project-section h3.dot-output::before { border-color: var(--olive);  background: var(--olive-subtle); }
+
+/* ── Evidence table ── */
+.evidence-table { width: 100%; border-collapse: collapse; margin: 14px 0 18px; }
+
+.evidence-table th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  border-bottom: 1.5px solid var(--rule);
+  padding: 6px 16px 6px 0;
+}
+
+.evidence-table td {
+  font-size: 13px;
+  color: var(--ink-mid);
+  padding: 6px 16px 6px 0;
+  border-bottom: 1px solid var(--rule-light);
+}
+
+.evidence-table td:nth-child(2) {
+  font-weight: 600;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Pipeline ── */
+.pipeline-details { margin-bottom: 36px; }
+
+.pipeline-details > summary {
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink-mid);
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px 5px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--rule);
+  background: var(--rule-light);
+  user-select: none;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.pipeline-details > summary:hover { color: var(--ink); background: var(--white); border-color: var(--ink-faint); }
+.pipeline-details > summary::-webkit-details-marker { display: none; }
+
+.pipeline-details > summary::before {
+  content: '▸';
+  font-size: 10px;
+  display: inline-block;
+  transition: transform 0.15s;
+}
+
+.pipeline-details[open] > summary::before { transform: rotate(90deg); }
+
+.pipeline { list-style: none; padding: 0; margin: 20px 0 0; position: relative; }
+
+.pipeline::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 8px;
+  bottom: 8px;
+  width: 1.5px;
+  background: var(--rule);
+}
+
+.pipeline-step { position: relative; padding: 0 0 16px 26px; line-height: 1.4; }
+.pipeline-step:last-child { padding-bottom: 0; }
+
+.pipeline-step::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 5px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 1.5px solid var(--rule);
+  z-index: 1;
+}
+
+.pipeline-step--input::before  { border-color: var(--ink-faint); background: var(--bg); }
+.pipeline-step--filter::before { border-color: var(--accent);    background: color-mix(in srgb, var(--accent) 15%, var(--bg)); }
+.pipeline-step--output::before { border-color: var(--olive);     background: color-mix(in srgb, var(--olive)  15%, var(--bg)); }
+.pipeline-step--result::before { border-color: var(--ink-faint); background: var(--bg); }
+
+.pipeline-step--detail::before { width: 10px; height: 10px; left: 1px; top: 6px; background: var(--white); border-color: var(--rule); }
+.pipeline-step--detail .pipeline-label { font-size: 12.5px; font-weight: 400; color: var(--ink-mid); }
+
+.pipeline-label { display: block; font-size: 14px; font-weight: 500; color: var(--ink); }
+.pipeline-sub   { display: block; font-size: 12px; color: var(--ink-light); margin-top: 2px; }
+
+/* ── Code block ── */
+.code-block {
+  background: #e5e0d8;
+  border-left: 3px solid var(--olive);
+  border-radius: var(--radius-sm);
+  padding: 11px 16px;
+  margin: 12px 0 16px;
+  font-family: 'SFMono-Regular', Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+  font-size: 12.5px;
+  color: var(--ink);
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}

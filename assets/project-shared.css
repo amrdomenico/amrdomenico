@@ -1,0 +1,141 @@
+/* ═══════════════════════════════════════════════
+   project-shared.css — common styles for all project detail pages
+   Requires: base.css
+   ═══════════════════════════════════════════════ */
+
+/* ── Navigation ── */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-light);
+  text-decoration: none;
+  margin-bottom: 36px;
+  padding: 6px 12px 6px 8px;
+  border-radius: var(--radius-sm);
+  transition: color 0.15s, background 0.15s, gap 0.15s;
+}
+
+.back-link:hover { color: var(--ink); background: var(--rule-light); gap: 10px; }
+
+/* ── Project header ── */
+.project-header { margin-bottom: 40px; }
+
+.project-title {
+  font-family: 'Lora', serif;
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 1.08;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.project-subtitle {
+  font-size: 16px;
+  color: var(--ink-mid);
+  line-height: 1.65;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+.project-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.project-meta a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--link-blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s;
+}
+
+.project-meta a:hover { color: var(--link-blue-hover); }
+
+.tag-list { line-height: 1.6; margin-top: 14px; }
+
+.tag { display: inline; font-size: 14px; color: #5d6b30; font-weight: 400; }
+.tag + .tag::before { content: ' · '; color: var(--ink-faint); }
+
+/* ── Project body ── */
+.project-body { max-width: 680px; }
+
+.project-section { margin-top: 40px; }
+
+.project-section h2 {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 6px;
+  margin-bottom: 16px;
+}
+
+.project-section p {
+  font-size: 15px;
+  color: var(--ink-mid);
+  line-height: 1.78;
+  margin-bottom: 14px;
+}
+
+.project-section p:last-child { margin-bottom: 0; }
+
+/* ── h3 with dot indicator (used by venom + spoiler) ── */
+.project-section h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 28px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.project-section h3::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid var(--rule);
+  background: var(--rule-light);
+  flex-shrink: 0;
+}
+
+/* ── Inline code (used by venom + spoiler) ── */
+code {
+  font-family: 'SFMono-Regular', Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+  font-size: 0.84em;
+  background: #e5e0d8;
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: var(--ink);
+}
+
+/* ── Page footer ── */
+.project-page-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+}
+
+.project-page-footer .back-link { margin-bottom: 0; }
+.project-footer-social { display: flex; gap: 4px; }
+
+/* ── Mobile ── */
+@media (max-width: 640px) {
+  .project-title { font-size: 30px; }
+}

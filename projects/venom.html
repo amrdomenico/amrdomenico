@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-M17970733W"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-M17970733W');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Venom Annotation Pipeline — Adriana Domênico</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23b5451b'/><text x='16' y='22' font-family='sans-serif' font-size='14' font-weight='600' fill='white' text-anchor='middle'>AD</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/project-shared.css">
+  <link rel="stylesheet" href="../assets/venom.css">
+</head>
+<body>
+
+<div class="site-nav-wrapper"><header class="site-nav">
+  <nav class="site-nav-links">
+    <a href="../index.html" data-i18n="nav-home">Home</a>
+    <a href="../index.html#resume" data-i18n="nav-resume">Currículo</a>
+  </nav>
+  <span class="lang-toggle">
+    <button class="btn-lang" data-lang="pt">🇧🇷</button>
+    <button class="btn-lang active" data-lang="en">🇺🇸</button>
+  </span>
+</header>
+</div>
+
+<main class="container">
+
+  <a href="../index.html" class="back-link" data-i18n="label-back-home">← Projetos</a>
+
+  <div class="project-header">
+    <h1 class="project-title">Venom Annotation Pipeline</h1>
+    <p class="project-subtitle" data-i18n="venom-subtitle">
+      From manual proteomics annotation to a reproducible classification system.
+    </p>
+    <div class="project-meta">
+      <a href="https://github.com/amrdomenico/venom-annotation-pipeline" target="_blank" rel="noopener noreferrer" data-i18n="label-view-repo">Ver repositório</a>
+    </div>
+    <div class="tag-list">
+      <span class="tag">Python</span>
+      <span class="tag">Pandas</span>
+      <span class="tag">UniProt REST API</span>
+      <span class="tag">InterPro</span>
+      <span class="tag">openpyxl</span>
+    </div>
+  </div>
+
+  <div class="project-body">
+
+    <div class="project-section">
+      <h2 data-i18n="venom-h-context">Context</h2>
+      <p data-i18n="venom-p-ctx-1">This project started long before I wrote any code.</p>
+      <p data-i18n="venom-p-ctx-2">During my proteomics specialization, I worked on the characterization of snake venom proteins identified through bottom-up proteomics. Functional annotation was done manually: each UniProt accession had to be reviewed individually, the biological information interpreted, and the classifications recorded in spreadsheets.</p>
+      <p data-i18n="venom-p-ctx-3">Years later, when the same dataset was revisited for manuscript preparation, the problem resurfaced. Re-running the analysis meant depending again on whoever still remembered the original reasoning. That was the point where I decided to redesign the workflow, not to update the spreadsheet, but to replace the process entirely.</p>
+    </div>
+
+    <div class="project-section">
+      <h2 data-i18n="venom-h-problem">The Problem</h2>
+      <p data-i18n="venom-p-prb-1">The challenge was not simply querying the UniProt API.</p>
+      <p data-i18n="venom-p-prb-2">The real challenge was translating biological reasoning into a reproducible system. Many classification decisions relied on domain knowledge, exceptions, and contextual interpretation. If those rules remained implicit in the analyst's head, the process would keep depending on that person. The goal was to make those decisions explicit and defensible.</p>
+      <p data-i18n="venom-p-prb-3">Beyond that, biological databases are rich but inconsistent. The same protein may have a well-defined domain annotation in InterPro and a vague family comment in UniProt. Another may have solid family information but no catalogued domains. Some have almost nothing.</p>
+      <p data-i18n="venom-p-prb-4">There is also the fact that snake venoms are biologically messy in an interesting way. Alongside the toxins, plasma proteins and blood cell proteins from the snake itself end up co-purifying during extraction. Actin, tubulin, and histones: these proteins appear in the data and must be discarded before classification, otherwise the final result gets distorted.</p>
+      <p data-i18n="venom-p-prb-5">And there was another, subtler problem: some toxins are inhibitory by nature. Cobra venom factor, for example, inhibits the complement system, but it is a legitimate toxin. Discarding any protein with the word "inhibitor" in its name would be a serious mistake.</p>
+    </div>
+
+    <div class="project-section">
+      <h2 data-i18n="venom-h-design">Design Decisions</h2>
+
+      <details class="pipeline-details" open>
+        <summary data-i18n="venom-pipeline-toggle">View pipeline</summary>
+        <ol class="pipeline">
+          <li class="pipeline-step pipeline-step--input">
+            <span class="pipeline-label" data-i18n="venom-pl-input-label">Input</span>
+            <span class="pipeline-sub" data-i18n="venom-pl-input-sub">Proteomics spreadsheet (.xlsx) · InterPro entry list (.csv)</span>
+          </li>
+          <li class="pipeline-step pipeline-step--detail">
+            <span class="pipeline-label" data-i18n="venom-pl-extract">Accession extraction + InterPro dictionary load</span>
+          </li>
+          <li class="pipeline-step pipeline-step--detail">
+            <span class="pipeline-label" data-i18n="venom-pl-api">UniProt REST API retrieval</span>
+          </li>
+          <li class="pipeline-step pipeline-step--detail">
+            <span class="pipeline-label" data-i18n="venom-pl-enrich">Annotation enrichment</span>
+          </li>
+          <li class="pipeline-step pipeline-step--output">
+            <span class="pipeline-label" data-i18n="venom-pl-class">Venom class assignment</span>
+          </li>
+          <li class="pipeline-step pipeline-step--detail">
+            <span class="pipeline-label" data-i18n="venom-pl-scoring">Weighted scoring</span>
+          </li>
+          <li class="pipeline-step pipeline-step--detail">
+            <span class="pipeline-label" data-i18n="venom-pl-class-sub">High / Medium / Low confidence</span>
+          </li>
+          <li class="pipeline-step pipeline-step--filter">
+            <span class="pipeline-label" data-i18n="venom-pl-filters">Safety filters</span>
+          </li>
+          <li class="pipeline-step pipeline-step--detail">
+            <span class="pipeline-label" data-i18n="venom-pl-filters-sub1">Contaminant removal</span>
+          </li>
+          <li class="pipeline-step pipeline-step--detail">
+            <span class="pipeline-label" data-i18n="venom-pl-filters-sub2">Non-toxin inhibitor validation</span>
+          </li>
+          <li class="pipeline-step pipeline-step--filter">
+            <span class="pipeline-label" data-i18n="venom-pl-ambiguity">Secondary class detection</span>
+          </li>
+          <li class="pipeline-step pipeline-step--detail">
+            <span class="pipeline-label" data-i18n="venom-pl-ambiguity-sub">Flagged when secondary score ≥ 75% of top</span>
+          </li>
+          <li class="pipeline-step pipeline-step--output">
+            <span class="pipeline-label" data-i18n="venom-pl-svmp">SVMP subclassification</span>
+          </li>
+          <li class="pipeline-step pipeline-step--detail">
+            <span class="pipeline-label" data-i18n="venom-pl-svmp-sub">P-I · P-II · P-III by domain composition</span>
+          </li>
+          <li class="pipeline-step pipeline-step--output">
+            <span class="pipeline-label" data-i18n="venom-pl-evidence">Evidence trail generation</span>
+          </li>
+          <li class="pipeline-step pipeline-step--detail">
+            <span class="pipeline-label" data-i18n="venom-pl-evidence-sub">field:term pairs per accession</span>
+          </li>
+          <li class="pipeline-step pipeline-step--result">
+            <span class="pipeline-label" data-i18n="venom-pl-output">Annotated Excel output</span>
+          </li>
+        </ol>
+      </details>
+
+      <h3 class="dot-output" data-i18n="venom-h-d-weights">An evidence hierarchy with binary weights</h3>
+      <p data-i18n="venom-p-d-weights-1">The first decision was not to treat all information sources as equivalent. A domain identified by InterPro is much more specific evidence than a similarity comment in UniProt. An InterPro family is more reliable than a free-text description field in the input spreadsheet.</p>
+      <p data-i18n="venom-p-d-weights-2">To reflect this, I implemented a field-weighted scoring system with weights as powers of 2:</p>
+      <table class="evidence-table">
+        <thead>
+          <tr>
+            <th data-i18n="venom-et-field">Field</th>
+            <th data-i18n="venom-et-weight">Weight</th>
+            <th data-i18n="venom-et-source">Source</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="venom-et-r1-field">InterPro Domain</td><td>32</td><td data-i18n="venom-et-r1-src">Most specific evidence</td></tr>
+          <tr><td data-i18n="venom-et-r2-field">InterPro Family</td><td>16</td><td>—</td></tr>
+          <tr><td data-i18n="venom-et-r3-field">Active Sites</td><td>8</td><td>—</td></tr>
+          <tr><td data-i18n="venom-et-r4-field">Spreadsheet description</td><td>4</td><td data-i18n="venom-et-r4-src">Free-text input</td></tr>
+          <tr><td data-i18n="venom-et-r5-field">UniProt family comment</td><td>2</td><td data-i18n="venom-et-r5-src">Fallback when no InterPro data</td></tr>
+          <tr><td data-i18n="venom-et-r6-field">InterPro Superfamily</td><td>1</td><td data-i18n="venom-et-r6-src">Most generic evidence</td></tr>
+        </tbody>
+      </table>
+      <p data-i18n="venom-p-d-weights-3">Using powers of 2 was a deliberate choice: it guarantees that no combination of less reliable sources can outweigh a more reliable one. A domain match is worth more than all other evidence combined. It is a system that reflects the reality of biological databases.</p>
+      <p data-i18n="venom-p-d-weights-4">The confidence tier of the final classification is derived from the highest weight that contributed to the result: if it came from a domain or family, it is "High"; if only from a free-text description, it is "Medium"; if only from a superfamily, it is "Low".</p>
+
+      <h3 class="dot-filter" data-i18n="venom-h-d-filters">Safety filters with two-step logic</h3>
+      <p data-i18n="venom-p-d-filters-1">For contaminants, the solution was straightforward: a list of terms that immediately discards the protein before any scoring.</p>
+      <p data-i18n="venom-p-d-filters-2">For inhibitors, I needed a two-step logic because the problem was ambiguous. First I check whether the protein is a legitimate venom inhibitor (Kunitz-type, three-finger toxins, cobra venom factor). If so, it goes straight to classification. Only then do I check whether it matches non-toxic inhibitor terms (serpin, alpha-2-macroglobulin). The order matters: without it, legitimate toxins would be discarded along with the noise.</p>
+
+      <h3 class="dot-filter" data-i18n="venom-h-d-ambiguity">Ambiguity detection</h3>
+      <p data-i18n="venom-p-d-ambiguity">Multi-domain proteins exist and are a real problem. A protein may carry evidence consistent with two classes at once. Rather than forcing a single answer, the pipeline records secondary classes whenever another class scores at least 75% of the top score. Those cases are flagged for manual review: the system does not try to be smarter than it should be.</p>
+
+      <h3 class="dot-output" data-i18n="venom-h-d-svmp">SVMP sub-classification</h3>
+      <p data-i18n="venom-p-d-svmp-1">Snake venom metalloproteinases (SVMPs) have three structural sub-classes based on domain composition: P-I has only the catalytic domain; P-II adds a disintegrin domain; P-III further adds a cysteine-rich domain. This matters biologically because it determines the toxic activity profile.</p>
+      <p data-i18n="venom-p-d-svmp-2">Detecting P-III requires two specific terms to co-occur in the same text ("cysteine-rich" + "disintegrin"). Neither alone is sufficient. This kind of co-occurrence logic required careful ordering of checks: first the direct and explicit terms, then the required combinations, and only then inference from isolated terms.</p>
+
+      <h3 class="dot-output" data-i18n="venom-h-d-trace">Full traceability</h3>
+      <p data-i18n="venom-p-d-trace-1">Every classification produces an evidence column with the exact trail of field:term pairs that drove the decision. For example:</p>
+      <pre class="code-block"><code>Domain:metalloproteinase | Domain:disintegrin | Family:m12b</code></pre>
+      <p data-i18n="venom-p-d-trace-2">This is not optional: it is essential. An automated pipeline that does not explain its decisions is unusable in a scientific context. Any suspicious result must be auditable without having to read through the code.</p>
+    </div>
+
+    <div class="project-section">
+      <h2 data-i18n="venom-h-challenges">Technical Challenges</h2>
+      <p data-i18n="venom-p-tc-1"><strong>Term overlap in the classification map.</strong> "Phospholipase A2" and "phospholipase" are different terms that map to different classes. Without controlled matching, "phospholipase" could be found inside "phospholipase a2" and misclassify the protein. The solution was to sort the term map by descending length before any lookup; more specific terms are always checked first.</p>
+      <p data-i18n="venom-p-tc-2"><strong>Public API with implicit rate limits.</strong> UniProt does not clearly document its limits, so I added a 200ms delay between requests as a courtesy measure and to avoid intermittent blocks. Not glamorous, but it works and it is considerate.</p>
+      <p data-i18n="venom-p-tc-3"><strong>Proteins with no annotation.</strong> Not every protein has information in UniProt: some return completely empty fields. The pipeline handles this gracefully without breaking, recording the result as "Others/Non Toxins" and moving on.</p>
+      <p data-i18n="venom-p-tc-4"><strong>GO terms and row explosion.</strong> Gene Ontology terms arrive as lists per protein. To facilitate downstream analysis (filtering by molecular function, for example), the final table is "exploded": each GO term becomes a separate row. This multiplies the output rows and needs to be well documented to avoid confusing whoever uses the data.</p>
+    </div>
+
+    <div class="project-section">
+      <h2 data-i18n="venom-h-limitations">Limitations</h2>
+      <p data-i18n="venom-p-lim-1">The pipeline is rule-based, not machine learning. The term map is handcrafted: it works well for the most well-known and well-documented toxin classes, but will fail for atypical proteins or ones poorly annotated in the databases. A new or poorly characterized protein would not be misclassified, it would silently fall into "Others/Non Toxins" with no signal that it might have deserved a match. A natural evolution would be to replace exact term matching with semantic similarity: text embeddings would capture functionally equivalent descriptions even when terminology varies across databases. For protein data, models like ProtTrans or ESM would be natural candidates, but adopting them would require a significant rewrite of the classification core, not an incremental improvement.</p>
+      <p data-i18n="venom-p-lim-2">The entire pipeline depends on external APIs. If UniProt changes its response format or discontinues an endpoint, the code breaks. This is a real risk that was not mitigated with any caching layer or local fallback.</p>
+      <p data-i18n="venom-p-lim-3">The SVMP sub-classification returns "P-? (SVMP confirmed)" when there is insufficient evidence in the queried fields. That is honest, but it is a gap that only manual review can fill.</p>
+      <p data-i18n="venom-p-lim-4">The GO term system filters only molecular function (F:) and biological process (P:) terms, discarding cellular component (C:). That was a pragmatic decision, but it may not be what every user wants.</p>
+    </div>
+
+    <div class="project-section">
+      <h2 data-i18n="venom-h-learned">What I Learned</h2>
+      <p data-i18n="venom-p-learned-1">More than the code itself, this project taught me that the hardest part is often not implementing a solution. It is understanding the problem well enough to model it correctly without losing the details that actually matter.</p>
+      <p data-i18n="venom-p-learned-2">The technical side of the project: querying the API, parsing JSON, merging DataFrames, was relatively straightforward. What took the most time was thinking through the biological edge cases: serpins that look like toxins but are not, toxins that look like inhibitors but are not, protein fragments that map to two domains at once.</p>
+      <p data-i18n="venom-p-learned-3">I learned that rule-based classification systems succeed or fail exactly on the quality of their exception rules. The main rule is easy to write. What separates a usable pipeline from an unusable one is how it handles what does not fit neatly anywhere. I also learned to value traceability from the very beginning. The evidence column was not an afterthought: but it could have been, if I had not anticipated that someone (including myself) would look at a result and ask "why did it classify this way?" In scientific tools, the answer to that question needs to be in the output, not just in the code.</p>
+    </div>
+
+  </div>
+
+  <nav class="project-page-footer">
+    <a href="../index.html" class="back-link" data-i18n="label-back-home">← Projetos</a>
+    <div class="project-footer-social">
+      <a class="footer-icon-link" href="https://github.com/amrdomenico" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="16" height="16">
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+        GitHub
+      </a>
+      <a class="footer-icon-link" href="https://linkedin.com/in/amrdomenico" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="16" height="16">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+        LinkedIn
+      </a>
+    </div>
+  </nav>
+
+</main>
+
+<script src="../js/main.js"></script>
+<script>
+  initI18n({
+    pt: {
+      'page-title':       'Venom Annotation Pipeline — Adriana Domênico',
+      'venom-subtitle':   'De anotação manual de proteômica para um sistema de classificação reprodutível.',
+      'venom-pipeline-toggle': 'Pipeline',
+      'venom-pl-input-label':  'Entrada',
+      'venom-pl-input-sub':    'Planilha de proteômica (.xlsx) · Lista de entradas InterPro (.csv)',
+      'venom-pl-extract':      'Extração de accessions + carregamento do dicionário InterPro',
+      'venom-pl-api':          'Consulta à UniProt REST API',
+      'venom-pl-enrich':       'Merge UniProt + InterPro',
+      'venom-pl-filters':      'Filtros de segurança',
+      'venom-pl-filters-sub1': 'Remoção de contaminantes',
+      'venom-pl-filters-sub2': 'Validação de inibidores não-tóxicos',
+      'venom-pl-scoring':      'Scoring ponderado',
+      'venom-pl-class':        'Atribuição de classe de veneno',
+      'venom-pl-class-sub':    'Confiança High / Medium / Low',
+      'venom-pl-svmp':         'Sub-classificação de SVMPs',
+      'venom-pl-svmp-sub':     'P-I · P-II · P-III por composição de domínios',
+      'venom-pl-ambiguity':    'Detecção de classe secundária',
+      'venom-pl-ambiguity-sub':'Sinalizado quando score secundário ≥ 75% do topo',
+      'venom-pl-evidence':     'Geração da trilha de evidências',
+      'venom-pl-evidence-sub': 'Pares campo:termo por accession',
+      'venom-pl-output':       'Output Excel anotado',
+
+      'venom-h-context': 'Contexto',
+      'venom-p-ctx-1':   'Esse projeto começou muito antes de eu escrever qualquer código. Começou com um processo de classificação que existia inteiramente na minha cabeça.',
+      'venom-p-ctx-2':   'Durante minha especialização em proteômica, trabalhei na caracterização de proteínas de veneno de serpente identificadas por proteômica bottom-up. A anotação funcional era feita manualmente: cada accession do UniProt revisado individualmente, as informações biológicas interpretadas e as classificações registradas em planilhas. Sem regras formalizadas. Sem trilha de auditoria. Sem forma de reproduzir o processo sem refazer a análise do zero.',
+      'venom-p-ctx-3':   'Anos mais tarde, quando o mesmo dataset foi revisitado para preparação de manuscrito, o problema ressurgiu. Reanalisar significava depender novamente de quem ainda se lembrava do raciocínio original. Foi nesse ponto que decidi redesenhar o fluxo, não para atualizar a planilha, mas para substituir o processo inteiro.',
+
+      'venom-h-problem': 'O problema',
+      'venom-p-prb-1':   'O desafio não era simplesmente consultar a API do UniProt.',
+      'venom-p-prb-2':   'O desafio real era traduzir raciocínio biológico em um sistema reprodutível. Muitas decisões de classificação dependiam de conhecimento de domínio, exceções e interpretação contextual. Se essas regras permanecessem implícitas na cabeça de quem fazia a análise, o processo continuaria dependendo dessa pessoa. O objetivo era tornar essas decisões explícitas e defensáveis.',
+      'venom-p-prb-3':   'Além disso, a camada de dados tem sua própria complexidade. As fontes de entrada tinham cobertura inconsistente: a mesma proteína podia ter uma anotação de domínio bem definida no InterPro e apenas um comentário de família vago no UniProt. Outras não tinham anotação estruturada alguma. A lógica de classificação precisava ser robusta a dados ausentes, parciais e contraditórios.',
+      'venom-p-prb-4':   'Outra questão é que venenos de serpentes são biologicamente bagunçados de um jeito interessante. Junto com as toxinas, proteínas do plasma e de células sanguíneas da própria serpente acabam co-purificando durante a extração. Vários componentes citoesqueléticos ou proteínas nucleares podem aparecer nos dados e precisam ser descartados antes da classificação, senão o resultado final fica distorcido.',
+      'venom-p-prb-5':   'E havia outro problema mais sutil: algumas toxinas são inibidoras por natureza. A cobra venom factor, por exemplo, inibe o sistema complemento, mas é uma toxina legítima. Um match ingênuo pela palavra "inibidor" a descartaria junto com proteínas genuinamente não-tóxicas. Resolver isso exigiu regras dependentes de contexto, não filtragem simples por string.',
+
+      'venom-h-design':       'Decisões de design',
+      'venom-h-d-weights':    'Uma hierarquia de evidências com pesos binários',
+      'venom-p-d-weights-1':  'A primeira decisão foi não tratar todas as fontes de informação como equivalentes. Um domínio identificado pelo InterPro é uma evidência muito mais específica do que um comentário de similaridade no UniProt. Uma família InterPro é mais confiável do que o campo de descrição livre da planilha de entrada.',
+      'venom-p-d-weights-2':  'Para refletir isso, implementei um sistema de pontuação ponderado por campo, com pesos em potências de 2:',
+      'venom-et-field':    'Campo',
+      'venom-et-weight':   'Peso',
+      'venom-et-source':   'Fonte',
+      'venom-et-r1-field': 'Domínio InterPro',
+      'venom-et-r1-src':   'Evidência mais específica',
+      'venom-et-r2-field': 'Família InterPro',
+      'venom-et-r3-field': 'Sites ativos',
+      'venom-et-r4-field': 'Descrição da planilha',
+      'venom-et-r4-src':   'Texto livre da entrada',
+      'venom-et-r5-field': 'Comentário de família UniProt',
+      'venom-et-r5-src':   'Fallback quando não há InterPro',
+      'venom-et-r6-field': 'Superfamília InterPro',
+      'venom-et-r6-src':   'Evidência mais genérica',
+      'venom-p-d-weights-3':  'Usar potências de 2 foi uma escolha deliberada: garante que nenhuma combinação de fontes menos confiáveis possa superar uma fonte mais confiável. Um domínio identificado vale mais do que todas as outras evidências juntas. É um sistema que reflete a realidade da biologia de bancos de dados.',
+      'venom-p-d-weights-4':  'A confiança da classificação final é derivada do maior peso que contribuiu para o resultado: se veio de domínio ou família, é "High"; se veio só de descrição de texto livre, é "Medium"; se só de superfamília, é "Low".',
+      'venom-h-d-filters':    'Filtros de segurança com lógica de dois passos',
+      'venom-p-d-filters-1':  'Para os contaminantes, a solução foi direta: uma lista de termos que imediatamente descarta a proteína antes de qualquer scoring.',
+      'venom-p-d-filters-2':  'Para os inibidores, precisei de uma lógica de dois passos porque o problema era ambíguo. Primeiro verifico se a proteína é um inibidor venenoso legítimo (Kunitz-type, three-finger toxins, cobra venom factor). Se sim, passa direto para classificação. Só então verifico se ela se encaixa nos termos de inibidor não tóxico (serpina, alfa-2-macroglobulina). Essa ordem importa: sem ela, toxinas legítimas seriam descartadas junto com o lixo.',
+      'venom-h-d-ambiguity':  'Detecção da ambiguidade',
+      'venom-p-d-ambiguity':  'Proteínas multi-domínio existem e são um problema real. Uma proteína pode conter evidências consistentes com duas classes ao mesmo tempo. Em vez de forçar uma resposta única, o pipeline registra classes secundárias quando a pontuação de outra classe chega a pelo menos 75% do melhor score. Esses casos são sinalizados para revisão manual: o sistema não tenta ser mais esperto do que deveria.',
+      'venom-h-d-trace':      'Rastreabilidade total',
+      'venom-p-d-trace-1':    'Cada classificação produz uma coluna de evidência com o trail exato dos pares campo:termo que levaram àquela decisão. Por exemplo:',
+      'venom-p-d-trace-2':    'Isso não é opcional: é essencial. Um pipeline automatizado que não explica suas decisões é inutilizável em contexto científico. Qualquer resultado suspeito precisa ser auditável sem ter que reler o código.',
+      'venom-h-d-svmp':       'Sub-classificação de SVMPs',
+      'venom-p-d-svmp-1':     'As metaloproteases de veneno de serpente (SVMPs) têm três sub-classes estruturais baseadas na composição de domínios: P-I tem só o domínio catalítico; P-II adiciona um domínio disintegrina; P-III adiciona ainda um domínio rico em cisteína. Isso importa biologicamente porque determina o perfil de atividade tóxica.',
+      'venom-p-d-svmp-2':     'A detecção de P-III exige que dois termos específicos co-ocorram no mesmo texto ("cysteine-rich" + "disintegrin"). Nenhum dos dois sozinho é suficiente. Esse tipo de lógica de co-ocorrência precisou de cuidado com a ordem das verificações: primeiro os termos diretos e explícitos, depois as combinações, e só então a inferência a partir de termos isolados.',
+
+      'venom-h-challenges': 'Os desafios técnicos',
+      'venom-p-tc-1': '<strong>Sobreposição de termos no mapa de classificação.</strong> "Phospholipase A2" e "phospholipase" são termos diferentes que mapeiam para classes diferentes. Se o matching não fosse controlado, "phospholipase" poderia ser encontrado dentro de "phospholipase a2" e classificar errado. A solução foi ordenar o mapa de termos por tamanho decrescente antes de qualquer busca; termos mais específicos são sempre verificados primeiro.',
+      'venom-p-tc-2': '<strong>API pública com rate limit implícito.</strong> O UniProt não documenta claramente seus limites, então adicionei um delay de 200ms entre requisições como medida de cortesia e para evitar bloqueios intermitentes. Não é glamouroso, mas funciona e é considerado.',
+      'venom-p-tc-3': '<strong>Proteínas sem anotação alguma.</strong> Nem toda proteína tem informações no UniProt: algumas retornam campos completamente vazios. O pipeline lida com isso graciosamente sem quebrar, registrando o resultado como "Others/Non Toxins" e seguindo em frente.',
+      'venom-p-tc-4': '<strong>GO terms e explosão de linhas.</strong> Gene Ontology terms chegam como listas por proteína. Para facilitar análise downstream (filtrar por função molecular, por exemplo), a tabela final é "explodida": cada GO term vira uma linha separada. Isso multiplica as linhas do output e precisa ser bem documentado para não confundir quem for usar.',
+
+      'venom-h-limitations': 'As limitações',
+      'venom-p-lim-1': 'O pipeline é baseado em regras, não em aprendizado de máquina. O mapa de termos é artesanal: funciona bem para as classes de toxinas mais conhecidas e documentadas, mas vai falhar para proteínas atípicas ou mal anotadas nas bases de dados. Uma proteína nova ou pouco caracterizada não seria classificada errado, cairia silenciosamente em "Others/Non Toxins", sem qualquer sinalização de que talvez devesse ter sido capturada. Uma evolução natural seria substituir a correspondência exata de termos por similaridade semântica: embeddings de texto permitiriam capturar descrições funcionalmente equivalentes mesmo quando a terminologia varia entre bancos de dados. Para dados proteicos, modelos como ProtTrans ou ESM seriam candidatos naturais, mas adotá-los exigiria uma reescrita significativa do núcleo de classificação, não seria uma melhoria incremental.',
+      'venom-p-lim-2': 'Todo o pipeline depende de APIs externas. Se o UniProt mudar seu formato de resposta ou descontinuar algum endpoint, o código quebra. Isso é um risco real que não foi mitigado com nenhuma camada de cache ou fallback local.',
+      'venom-p-lim-3': 'A sub-classificação de SVMP retorna "P-? (SVMP confirmed)" quando não há evidência suficiente nos campos consultados. Isso é honesto, mas é um buraco que só revisão manual pode preencher.',
+      'venom-p-lim-4': 'O sistema de GO terms filtra só os termos de função molecular (F:) e processo biológico (P:), descartando componente celular (C:). Essa foi uma decisão pragmática, mas pode não ser o que todos os usuários querem.',
+
+      'venom-h-learned':    'O que aprendi',
+      'venom-p-learned-1':  'Mais do que o código, esse projeto me ensinou que muitas vezes a parte mais difícil não é implementar uma solução. É entender o problema o suficiente para modelá-lo corretamente sem perder os detalhes que realmente importam.',
+      'venom-p-learned-2':  'A parte técnica do projeto: fazer requisições à API, parsear JSON, fazer merges de DataFrames, foi relativamente direta. O que levou mais tempo foi pensar nos casos de borda biológicos: as serpinas que parecem toxinas mas não são, as toxinas que parecem inibidores mas são, os fragmentos de proteínas que mapeiam para dois domínios ao mesmo tempo.',
+      'venom-p-learned-3':  'Aprendi que sistemas de classificação baseados em regras ficam bons ou ruins exatamente na qualidade das regras de exceção. A regra principal é fácil de escrever. O que separa um pipeline utilizável de um não-utilizável é como ele lida com o que não se encaixa perfeitamente em lugar nenhum. Também aprendi a valorizar rastreabilidade desde o início. A coluna de evidências não foi um afterthought: mas poderia ter sido, se eu não tivesse antecipado que alguém (inclusive eu mesma) ia olhar para um resultado e perguntar "por que classificou assim?". Em ferramentas científicas, a resposta a essa pergunta precisa estar no output, não só no código.',
+    },
+    en: {
+      'page-title':       'Venom Annotation Pipeline — Adriana Domênico',
+      'venom-subtitle':   'From manual proteomics annotation to a reproducible classification system.',
+      'venom-pipeline-toggle': 'Pipeline',
+      'venom-pl-input-label':  'Input',
+      'venom-pl-input-sub':    'Proteomics spreadsheet (.xlsx) · InterPro entry list (.csv)',
+      'venom-pl-extract':      'Accession extraction + InterPro dictionary load',
+      'venom-pl-api':          'UniProt REST API retrieval',
+      'venom-pl-enrich':       'Merge UniProt + InterPro',
+      'venom-pl-filters':      'Safety filters',
+      'venom-pl-filters-sub1': 'Contaminant removal',
+      'venom-pl-filters-sub2': 'Non-toxin inhibitor validation',
+      'venom-pl-scoring':      'Weighted scoring',
+      'venom-pl-class':        'Venom class assignment',
+      'venom-pl-class-sub':    'High / Medium / Low confidence',
+      'venom-pl-svmp':         'SVMP subclassification',
+      'venom-pl-svmp-sub':     'P-I · P-II · P-III by domain composition',
+      'venom-pl-ambiguity':    'Secondary class detection',
+      'venom-pl-ambiguity-sub':'Flagged when secondary score ≥ 75% of top',
+      'venom-pl-evidence':     'Evidence trail generation',
+      'venom-pl-evidence-sub': 'field:term pairs per accession',
+      'venom-pl-output':       'Annotated Excel output',
+
+      'venom-h-context': 'Context',
+      'venom-p-ctx-1':   'This project started long before I wrote any code. It started with a classification process that lived entirely in my head.',
+      'venom-p-ctx-2':   'During my proteomics specialization, I worked on characterizing snake venom proteins identified through bottom-up proteomics. Functional annotation was done manually: each UniProt accession reviewed individually, biological information interpreted by hand, classifications recorded in a spreadsheet. No formalized rules. No audit trail. No way to reproduce the process without repeating the analysis from scratch.',
+      'venom-p-ctx-3':   'Years later, when the same dataset was revisited for manuscript preparation, the problem resurfaced. Re-running the analysis meant depending again on whoever still remembered the original reasoning. That was the point where I decided to redesign the workflow, not to update the spreadsheet, but to replace the process entirely.',
+
+      'venom-h-problem': 'The Problem',
+      'venom-p-prb-1':   'The challenge was not simply querying the UniProt API.',
+      'venom-p-prb-2':   'The real challenge was translating biological reasoning into a reproducible system. Many classification decisions relied on domain knowledge, exceptions, and contextual interpretation. If those rules remained implicit in the analyst\'s head, the process would keep depending on that person. The goal was to make those decisions explicit and defensible.',
+      'venom-p-prb-3':   'Beyond that, the data layer has its own complexity. Input sources had inconsistent coverage: the same protein might have a well-defined domain annotation in InterPro but only a vague family comment in UniProt. Others had no structured annotation at all. The classification logic had to be robust to missing, partial, and contradictory data.',
+      'venom-p-prb-4':   'Another issue is that snake venoms are biologically messy in an interesting way. Alongside the toxins, plasma proteins and blood cell proteins from the snake itself end up co-purifying during extraction. Various cytoskeletal components or nuclear proteins can appear in the data and need to be discarded before classification, otherwise the final result gets distorted.',
+      'venom-p-prb-5':   'And there was a subtler problem: some toxins are inhibitory by nature. Cobra venom factor, for example, inhibits the complement system, but it is a legitimate toxin. A naive keyword match on "inhibitor" would discard it along with genuinely non-toxic proteins. Resolving this required context-dependent rules, not simple string filtering.',
+
+      'venom-h-design':       'Design Decisions',
+      'venom-h-d-weights':    'An evidence hierarchy with binary weights',
+      'venom-p-d-weights-1':  'The first decision was not to treat all information sources as equivalent. A domain identified by InterPro is much more specific evidence than a similarity comment in UniProt. An InterPro family is more reliable than a free-text description field in the input spreadsheet.',
+      'venom-p-d-weights-2':  'To reflect this, I implemented a field-weighted scoring system with weights as powers of 2:',
+      'venom-et-field':    'Field',
+      'venom-et-weight':   'Weight',
+      'venom-et-source':   'Source',
+      'venom-et-r1-field': 'InterPro Domain',
+      'venom-et-r1-src':   'Most specific evidence',
+      'venom-et-r2-field': 'InterPro Family',
+      'venom-et-r3-field': 'Active Sites',
+      'venom-et-r4-field': 'Spreadsheet description',
+      'venom-et-r4-src':   'Free-text input',
+      'venom-et-r5-field': 'UniProt family comment',
+      'venom-et-r5-src':   'Fallback when no InterPro data',
+      'venom-et-r6-field': 'InterPro Superfamily',
+      'venom-et-r6-src':   'Most generic evidence',
+      'venom-p-d-weights-3':  'Using powers of 2 was a deliberate choice: it guarantees that no combination of less reliable sources can outweigh a more reliable one. A domain match is worth more than all other evidence combined. It is a system that reflects the reality of biological databases.',
+      'venom-p-d-weights-4':  'The confidence tier of the final classification is derived from the highest weight that contributed to the result: if it came from a domain or family, it is "High"; if only from a free-text description, it is "Medium"; if only from a superfamily, it is "Low".',
+      'venom-h-d-filters':    'Safety filters with two-step logic',
+      'venom-p-d-filters-1':  'For contaminants, the solution was straightforward: a list of terms that immediately discards the protein before any scoring.',
+      'venom-p-d-filters-2':  'For inhibitors, I needed a two-step logic because the problem was ambiguous. First I check whether the protein is a legitimate venom inhibitor (Kunitz-type, three-finger toxins, cobra venom factor). If so, it goes straight to classification. Only then do I check whether it matches non-toxic inhibitor terms (serpin, alpha-2-macroglobulin). The order matters: without it, legitimate toxins would be discarded along with the noise.',
+      'venom-h-d-ambiguity':  'Ambiguity detection',
+      'venom-p-d-ambiguity':  'Multi-domain proteins exist and are a real problem. A protein may carry evidence consistent with two classes at once. Rather than forcing a single answer, the pipeline records secondary classes whenever another class scores at least 75% of the top score. Those cases are flagged for manual review: the system does not try to be smarter than it should be.',
+      'venom-h-d-trace':      'Full traceability',
+      'venom-p-d-trace-1':    'Every classification produces an evidence column with the exact trail of field:term pairs that drove the decision. For example:',
+      'venom-p-d-trace-2':    'This is not optional: it is essential. An automated pipeline that does not explain its decisions is unusable in a scientific context. Any suspicious result must be auditable without having to read through the code.',
+      'venom-h-d-svmp':       'SVMP sub-classification',
+      'venom-p-d-svmp-1':     'Snake venom metalloproteinases (SVMPs) have three structural sub-classes based on domain composition: P-I has only the catalytic domain; P-II adds a disintegrin domain; P-III further adds a cysteine-rich domain. This matters biologically because it determines the toxic activity profile.',
+      'venom-p-d-svmp-2':     'Detecting P-III requires two specific terms to co-occur in the same text ("cysteine-rich" + "disintegrin"). Neither alone is sufficient. This kind of co-occurrence logic required careful ordering of checks: first the direct and explicit terms, then the required combinations, and only then inference from isolated terms.',
+
+      'venom-h-challenges': 'Technical Challenges',
+      'venom-p-tc-1': '<strong>Term overlap in the classification map.</strong> "Phospholipase A2" and "phospholipase" are different terms that map to different classes. Without controlled matching, "phospholipase" could be found inside "phospholipase a2" and misclassify the protein. The solution was to sort the term map by descending length before any lookup; more specific terms are always checked first.',
+      'venom-p-tc-2': '<strong>Public API with implicit rate limits.</strong> UniProt does not clearly document its limits, so I added a 200ms delay between requests as a courtesy measure and to avoid intermittent blocks. Not glamorous, but it works and it is considerate.',
+      'venom-p-tc-3': '<strong>Proteins with no annotation.</strong> Not every protein has information in UniProt: some return completely empty fields. The pipeline handles this gracefully without breaking, recording the result as "Others/Non Toxins" and moving on.',
+      'venom-p-tc-4': '<strong>GO terms and row explosion.</strong> Gene Ontology terms arrive as lists per protein. To facilitate downstream analysis (filtering by molecular function, for example), the final table is "exploded": each GO term becomes a separate row. This multiplies the output rows and needs to be well documented to avoid confusing whoever uses the data.',
+
+      'venom-h-limitations': 'Limitations',
+      'venom-p-lim-1': 'The pipeline is rule-based, not machine learning. The term map is handcrafted: it works well for the most well-known and well-documented toxin classes, but will fail for atypical proteins or ones poorly annotated in the databases. A new or poorly characterized protein would not be misclassified, it would silently fall into "Others/Non Toxins" with no signal that it might have deserved a match. A natural evolution would be to replace exact term matching with semantic similarity: text embeddings would capture functionally equivalent descriptions even when terminology varies across databases. For protein data, models like ProtTrans or ESM would be natural candidates, but adopting them would require a significant rewrite of the classification core, not an incremental improvement.',
+      'venom-p-lim-2': 'The entire pipeline depends on external APIs. If UniProt changes its response format or discontinues an endpoint, the code breaks. This is a real risk that was not mitigated with any caching layer or local fallback.',
+      'venom-p-lim-3': 'The SVMP sub-classification returns "P-? (SVMP confirmed)" when there is insufficient evidence in the queried fields. That is honest, but it is a gap that only manual review can fill.',
+      'venom-p-lim-4': 'The GO term system filters only molecular function (F:) and biological process (P:) terms, discarding cellular component (C:). That was a pragmatic decision, but it may not be what every user wants.',
+
+      'venom-h-learned':   'What I Learned',
+      'venom-p-learned-1': 'More than the code itself, this project taught me that the hardest part is often not implementing a solution. It is understanding the problem well enough to model it correctly without losing the details that actually matter.',
+      'venom-p-learned-2': 'The technical side of the project: querying the API, parsing JSON, merging DataFrames, was relatively straightforward. What took the most time was thinking through the biological edge cases: serpins that look like toxins but are not, toxins that look like inhibitors but are not, protein fragments that map to two domains at once.',
+      'venom-p-learned-3': 'I learned that rule-based classification systems succeed or fail exactly on the quality of their exception rules. The main rule is easy to write. What separates a usable pipeline from an unusable one is how it handles what does not fit neatly anywhere. I also learned to value traceability from the very beginning. The evidence column was not an afterthought: but it could have been, if I had not anticipated that someone (including myself) would look at a result and ask "why did it classify this way?" In scientific tools, the answer to that question needs to be in the output, not just in the code.',
+    }
+  });
+</script>
+</body>
+</html>

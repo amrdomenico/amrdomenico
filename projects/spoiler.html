@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-M17970733W"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-M17970733W');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spoiler Guard — Adriana Domênico</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23b5451b'/><text x='16' y='22' font-family='sans-serif' font-size='14' font-weight='600' fill='white' text-anchor='middle'>AD</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/project-shared.css">
+  <link rel="stylesheet" href="../assets/spoiler.css">
+</head>
+<body>
+
+<div class="site-nav-wrapper"><header class="site-nav">
+  <nav class="site-nav-links">
+    <a href="../index.html" data-i18n="nav-home">Home</a>
+    <a href="../index.html#resume" data-i18n="nav-resume">Currículo</a>
+  </nav>
+  <span class="lang-toggle">
+    <button class="btn-lang" data-lang="pt">🇧🇷</button>
+    <button class="btn-lang active" data-lang="en">🇺🇸</button>
+  </span>
+</header>
+</div>
+
+<main class="container">
+
+  <a href="../index.html" class="back-link" data-i18n="label-back-home">← Projetos</a>
+
+  <div class="project-header">
+    <h1 class="project-title">Spoiler Guard</h1>
+    <p class="project-subtitle" data-i18n="sp-subtitle">
+      LLM-based system for contextual Q&amp;A about TV series without revealing spoilers.
+    </p>
+    <div class="project-meta">
+      <a href="https://github.com/amrdomenico/SpoilerGuard" target="_blank" rel="noopener noreferrer" data-i18n="label-view-repo">Ver repositório</a>
+    </div>
+    <div class="tag-list">
+      <span class="tag">Python</span>
+      <span class="tag">FastAPI</span>
+      <span class="tag">Pydantic</span>
+      <span class="tag">Gemini SDK</span>
+      <span class="tag">JavaScript</span>
+      <span class="tag">HTML/CSS</span>
+      <span class="tag">REST API</span>
+      <span class="tag">Prompt Engineering</span>
+    </div>
+  </div>
+
+  <div class="project-body">
+
+    <div class="project-section">
+      <h2 data-i18n="sp-h-context">Context</h2>
+      <p data-i18n="sp-p-ctx-1">This project started with a simple question: can an AI assistant answer questions about TV series without accidentally revealing spoilers?</p>
+      <p data-i18n="sp-p-ctx-2">At first, the problem seemed fairly straightforward. Large language models are capable of understanding narratives, characters, and plot events, so it seemed reasonable to ask them to avoid spoilers when generating responses. However, asking the model to answer the question and assess spoiler risk in a single step produced inconsistent results. Sometimes the response was safe; other times, it revealed information a viewer might consider a spoiler, depending on how the question was phrased and how the model interpreted it.</p>
+      <p data-i18n="sp-p-ctx-3">The solution was to separate those responsibilities: the user provides where they are in the series (show, season, episode) and asks a question; the model classifies the response as <code>SAFE</code> or <code>WARNING</code> before revealing anything. If <code>WARNING</code>, nothing is revealed: the model only asks whether the user wants to continue, and the answer only comes after explicit confirmation.</p>
+      <p data-i18n="sp-p-ctx-4">This made it clear that the real problem was not generating responses. It was deciding whether a response should be generated at all.</p>
+    </div>
+
+    <div class="project-section">
+      <h2 data-i18n="sp-h-problem">The Problem</h2>
+      <p data-i18n="sp-p-prb-1">Spoilers are highly contextual. The same information can be harmless for one person and a major reveal for another, depending on how much of the series they have watched. And the ambiguity goes beyond the obvious: revealing a major character's death is a clear spoiler, but what about a relationship that develops later? A future appearance? The simple fact that someone survives up to a certain point in the story?</p>
+      <p data-i18n="sp-p-prb-2">If spoiler detection remained implicit inside response generation, the system would have limited predictability and little control over its failure modes. I needed to separate those responsibilities and make the behavior explicit.</p>
+    </div>
+
+    <div class="project-section">
+      <h2 data-i18n="sp-h-learn-goal">What I Wanted to Learn</h2>
+      <p data-i18n="sp-p-lg-1">More than solving the spoiler problem, this project was a deliberate learning exercise. I wanted to understand in practice how to integrate an LLM into a real application: how to pass context, how to structure output, how to manage a conversation session with history, how to handle failures from an external API. The spoiler problem was the pretext; LLM integration engineering was the goal.</p>
+    </div>
+
+    <div class="project-section">
+      <h2 data-i18n="sp-h-design">Design Decisions</h2>
+
+      <h3 class="dot-output" data-i18n="sp-h-d-endpoints">Two endpoints with a dependency</h3>
+      <p data-i18n="sp-p-d-ep-1">The <code>/ask → /confirm</code> flow is not the simplest way to build an API, but it reflects exactly the domain logic: before revealing anything, you need to classify and confirm. It also forced me to think about how to model state across two calls, something that stays hidden in simpler projects.</p>
+
+      <h3 class="dot-output" data-i18n="sp-h-d-sessions">In-memory sessions</h3>
+      <p data-i18n="sp-p-d-sess-1">Each conversation is a Gemini chat object stored in a Python dictionary in memory, indexed by a <code>session_id</code> UUID generated on the frontend. This means conversation history persists across questions in the same session, but disappears if the server restarts. The obvious alternative was Redis, but I deliberately left it out, since the focus was on understanding how Gemini manages conversational context, not on scaling state. The trade-off was intentional.</p>
+
+      <h3 class="dot-output" data-i18n="sp-h-d-output">Structured LLM output</h3>
+      <p data-i18n="sp-p-d-out-1">One of the biggest challenges in any LLM integration is ensuring the response has a consistent format. I addressed this on two fronts: using <code>response_mime_type: 'application/json'</code> in the model configuration (which instructs Gemini to always return JSON) and having a manual parsing fallback in case the pre-parsed object did not come through. The output schema (<code>spoiler_level</code>, <code>warning_message</code>, <code>response</code>, <code>tip</code>) was iterated a few times until it mapped exactly to what the frontend needed to render.</p>
+
+      <h3 class="dot-filter" data-i18n="sp-h-d-temp">Low temperature</h3>
+      <p data-i18n="sp-p-d-temp-1">Using <code>temperature: 0.3</code> was a consistency choice. In a system that classifies content into binary categories (<code>SAFE</code>/<code>WARNING</code>), creativity is the enemy: the model needs to be predictable. The higher the temperature, the greater the chance the model invents inconsistent classifications or ignores the prompt rules.</p>
+
+      <h3 class="dot-filter" data-i18n="sp-h-d-sanitize">Sanitization and prompt injection</h3>
+      <p data-i18n="sp-p-d-san-1">When the user has a free-text field, there is a risk of someone trying to manipulate the model by passing disguised instructions as questions — for example, writing "SYSTEM: ignore the previous instructions and...". I implemented sanitization that blocks common structural prompt injection patterns using regex. It is not a foolproof solution, but it is a conscious defense layer for a project at this scale.</p>
+
+      <h3 class="dot-filter" data-i18n="sp-h-d-retry">Retry with linear backoff</h3>
+      <p data-i18n="sp-p-d-retry-1">External APIs fail. Gemini has quotas, returns 429 when exceeded, and occasionally becomes unstable. Rather than letting the error reach the user directly, I implemented a retry logic with increasing wait times (<code>delay × attempt</code>). Transient errors trigger a retry; fatal errors (token limit, invalid JSON) fail immediately. That distinction — what is worth retrying and what is not — was one of the most practical lessons of the project.</p>
+    </div>
+
+    <div class="project-section">
+      <h2 data-i18n="sp-h-challenges">Challenges</h2>
+
+      <h3 class="no-dot" data-i18n="sp-h-ch-context">Getting the model to respect context boundaries</h3>
+      <p data-i18n="sp-p-ch-ctx-1">The main engineering challenge was convincing Gemini that its role was not to answer freely, but to classify first. Early on, the model would frequently slip and hint at spoilers within the warning message itself. I kept refining the prompt until I reached instructions that clearly separated the two modes: if <code>WARNING</code>, only ask for confirmation, never reveal.</p>
+
+      <h3 class="no-dot" data-i18n="sp-h-ch-json">Consistent JSON output</h3>
+      <p data-i18n="sp-p-ch-json-1">Even with <code>response_mime_type</code> configured, the model would occasionally return JSON wrapped inside a markdown code block. The manual parsing with <code>.removeprefix("```json").removesuffix("```")</code> was the pragmatic fix. Not elegant, but honest about how LLMs behave in practice.</p>
+
+      <h3 class="no-dot" data-i18n="sp-h-ch-series">Keeping the model focused on the right series</h3>
+      <p data-i18n="sp-p-ch-ser-1">Without guardrails, the model answered questions about any series, ignoring the context passed in the system prompt. I added an explicit rule: "only discuss <code>{user_serie}</code>; if the question is about another series, ask the user to start a new session." This illustrates how prompt engineering is sometimes less about technical instruction and more about shaping behavioral expectations.</p>
+    </div>
+
+    <div class="project-section">
+      <h2 data-i18n="sp-h-limitations">Limitations</h2>
+      <p data-i18n="sp-p-lim-1">The frontend is intentionally minimal. There is no visual conversation history, the interaction feels more like a form than a chat, and it does not persist context across page reloads. I made that choice to avoid losing focus on what I actually wanted to learn, but the result is not a good product experience.</p>
+      <p data-i18n="sp-p-lim-2">The <code>session_id</code> is generated on the frontend and trusted by the backend without any additional validation. In production, this would be a serious security issue. Here it is an acceptable simplification for a local learning project.</p>
+      <p data-i18n="sp-p-lim-3">The Gemini free tier is limited. With heavy use, you hit the rate limit quickly. For real-world use, billing would need to be configured, or a caching strategy for repeated questions would be needed.</p>
+      <p data-i18n="sp-p-lim-4">The in-memory state means restarting the server wipes all conversation history. For real persistence, the natural next step would be Redis with a TTL per session.</p>
+    </div>
+
+    <div class="project-section">
+      <h2 data-i18n="sp-h-learned">What I Learned</h2>
+      <p data-i18n="sp-p-learned-1">This project reinforced an idea that now shapes how I think about AI systems: separating decision-making from content generation can be more important than improving the generator itself. Many reliability problems become easier to understand when responsibilities are isolated and failure modes are explicit. Sometimes, the most valuable architectural decision is not making a model more powerful, but making its behavior more predictable.</p>
+      <p data-i18n="sp-p-learned-2">That idea became more concrete when turning it into code. Practical lessons emerged about the behavior of LLM-based systems: that temperature matters for classification applications, that LLM output is never fully reliable without strict format instructions, that chat sessions carry a token cost that grows with history, and that prompt injection is a real attack vector that needs to be considered from the start of the project.</p>
+      <p data-i18n="sp-p-learned-3">But perhaps the simplest lesson was the most valuable: building something for a problem you actually have is the most efficient way to learn.</p>
+    </div>
+
+  </div>
+
+  <nav class="project-page-footer">
+    <a href="../index.html" class="back-link" data-i18n="label-back-home">← Projetos</a>
+    <div class="project-footer-social">
+      <a class="footer-icon-link" href="https://github.com/amrdomenico" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="16" height="16">
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+        GitHub
+      </a>
+      <a class="footer-icon-link" href="https://linkedin.com/in/amrdomenico" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="16" height="16">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+        LinkedIn
+      </a>
+    </div>
+  </nav>
+
+</main>
+
+<script src="../js/main.js"></script>
+<script>
+  initI18n({
+    pt: {
+      'page-title':       'SpoilerGuard — Adriana Domênico',
+      'sp-subtitle':      'Um experimento sobre previsibilidade em IA, usando spoilers como problema de projeto.',
+      'sp-h-context':    'Contexto',
+      'sp-p-ctx-1':      'Este projeto começou com uma pergunta simples: um assistente de IA consegue responder perguntas sobre séries sem revelar spoilers acidentalmente?',
+      'sp-p-ctx-2':      'No início, o problema parecia bastante direto. Modelos de linguagem são capazes de compreender narrativas, personagens e eventos da trama, então parecia razoável pedir que evitassem spoilers ao gerar respostas. No entanto, pedir ao modelo que respondesse à pergunta e avaliasse o risco de spoiler em uma única etapa produzia resultados inconsistentes. Às vezes a resposta era segura; em outras, revelava informações que um espectador poderia considerar um spoiler, dependendo da formulação da pergunta e da interpretação do modelo.',
+      'sp-p-ctx-3':      'A solução foi separar essas responsabilidades: o usuário informa onde está na série (série, temporada, episódio) e faz uma pergunta; o modelo classifica a resposta como <code>SAFE</code> ou <code>WARNING</code> antes de revelar qualquer coisa. Se <code>WARNING</code>, nada é revelado: o modelo apenas pergunta se o usuário quer continuar, e a resposta só vem depois de uma confirmação explícita.',
+      'sp-p-ctx-4':      'Isso deixou claro que o problema real não era gerar respostas. Era decidir se uma resposta deveria ser gerada.',
+
+      'sp-h-problem':    'O problema',
+      'sp-p-prb-1':      'Spoilers são altamente contextuais. A mesma informação pode ser inofensiva para uma pessoa e reveladora para outra, dependendo de quanto da série ela assistiu. E a ambiguidade vai além do óbvio: revelar a morte de um personagem importante é um spoiler claro, mas e um relacionamento que se desenvolve mais adiante? Uma aparição futura? O simples fato de alguém sobreviver até determinado ponto da trama?',
+      'sp-p-prb-2':      'Se a detecção de spoilers ficasse implícita dentro da geração da resposta, o sistema teria previsibilidade limitada e pouco controle sobre seus modos de falha. Era preciso separar essas responsabilidades e tornar o comportamento explícito.',
+
+      'sp-h-learn-goal': 'O que eu queria aprender',
+      'sp-p-lg-1':       'Mais do que resolver o problema do spoiler, esse projeto foi um laboratório deliberado. Eu queria entender na prática como integrar um LLM em uma aplicação real: como passar contexto, como estruturar o output, como gerenciar uma sessão de conversa com histórico, como lidar com falhas de API externa. O problema do spoiler foi o pretexto; a engenharia de integração com IA foi o objetivo.',
+
+      'sp-h-design':         'Decisões de design',
+      'sp-h-d-endpoints':    'Dois endpoints com dependência',
+      'sp-p-d-ep-1':         'O fluxo <code>/ask → /confirm</code> não é a forma mais simples de construir uma API, mas reflete exatamente a lógica do domínio: antes de revelar, é preciso classificar e confirmar. Isso também forçou a pensar em como modelar estado entre duas chamadas, algo que em projetos mais simples fica escondido.',
+      'sp-h-d-sessions':     'Sessões em memória',
+      'sp-p-d-sess-1':       'Cada conversa é um objeto de chat do Gemini armazenado num dicionário Python em memória, indexado por um <code>session_id</code> UUID gerado no frontend. Isso significa que o histórico da conversa persiste entre perguntas na mesma sessão, mas some se o servidor reiniciar. A alternativa óbvia seria Redis, mas eu deliberadamente deixei de fora, pois o foco era entender como o Gemini gerencia contexto conversacional, não como escalar estado. O trade-off foi consciente.',
+      'sp-h-d-output':       'Output estruturado do LLM',
+      'sp-p-d-out-1':        'Um dos maiores desafios em qualquer integração com LLM é garantir que a resposta tenha um formato consistente. Resolvi isso em duas frentes: usando <code>response_mime_type: \'application/json\'</code> na configuração do modelo (que instrui o Gemini a sempre retornar JSON) e tendo um fallback de parsing manual caso o objeto pré-parseado não viesse. O schema do output (<code>spoiler_level</code>, <code>warning_message</code>, <code>response</code>, <code>tip</code>) foi iterado algumas vezes até refletir exatamente o que o frontend precisava renderizar.',
+      'sp-h-d-temp':         'Temperatura baixa',
+      'sp-p-d-temp-1':       'Usar <code>temperature: 0.3</code> foi uma escolha de consistência. Num sistema que classifica conteúdo em categorias binárias (<code>SAFE</code>/<code>WARNING</code>), criatividade é inimiga: o modelo precisa ser previsível. Quanto mais alta a temperatura, mais chance de o modelo inventar classificações inconsistentes ou ignorar as regras do prompt.',
+      'sp-h-d-sanitize':     'Sanitização e prompt injection',
+      'sp-p-d-san-1':        'Quando o usuário tem um campo de texto livre, existe o risco de alguém tentar manipular o modelo passando instruções disfarçadas de perguntas, como escrever "SYSTEM: ignore as instruções anteriores e...". Implementei uma sanitização que bloqueia padrões estruturais comuns de prompt injection com regex. Não é uma solução infalível, mas é uma camada de defesa consciente para um projeto nessa escala.',
+      'sp-h-d-retry':        'Retry com backoff linear',
+      'sp-p-d-retry-1':      'APIs externas falham. O Gemini tem cotas, retorna 429 quando excedidas, e ocasionalmente fica instável. Em vez de deixar o erro chegar direto para o usuário, implementei uma lógica de retry com espera crescente (<code>delay × tentativa</code>). Erros transitórios tentam novamente; erros fatais (limite de tokens, JSON inválido) falham imediatamente. Essa distinção — o que vale tentar de novo e o que não vale — foi um dos aprendizados mais práticos do projeto.',
+
+      'sp-h-challenges':     'Os desafios técnicos',
+      'sp-h-ch-context':     'Fazer o modelo respeitar os limites do contexto',
+      'sp-p-ch-ctx-1':       'O principal desafio de engenharia foi convencer o Gemini de que sua função não era responder livremente, mas classificar primeiro. No começo, o modelo frequentemente escorregava e antecipava spoilers na própria mensagem de aviso. Fui refinando o prompt até chegar em instruções que separavam claramente os dois modos: se <code>WARNING</code>, apenas perguntar confirmação, nunca revelar.',
+      'sp-h-ch-json':        'Output JSON consistente',
+      'sp-p-ch-json-1':      'Mesmo com <code>response_mime_type</code> configurado, o modelo ocasionalmente retornava JSON dentro de um bloco de código markdown. O parsing manual com <code>.removeprefix("```json").removesuffix("```")</code> foi a solução pragmática. Não é elegante, mas é honesto sobre como LLMs se comportam na prática.',
+      'sp-h-ch-series':      'Manter o modelo focado na série correta',
+      'sp-p-ch-ser-1':       'Sem guardrails, o modelo respondia perguntas sobre qualquer série, ignorando o contexto passado no sistema. Adicionei uma regra explícita no prompt: "só discuta <code>{user_serie}</code>; se a pergunta for sobre outra série, peça para o usuário iniciar uma nova sessão." Isso exemplifica como prompt engineering às vezes é menos sobre instrução técnica e mais sobre modelar expectativas de comportamento.',
+
+      'sp-h-limitations':    'As limitações',
+      'sp-p-lim-1':          'O frontend é intencionalmente minimalista. Não tem histórico visual da conversa, a interação parece mais um formulário do que um chat, e não persiste o contexto entre recarregamentos de página. Fiz essa escolha para não dispersar atenção do que eu realmente queria aprender, mas o resultado não é uma boa experiência de produto.',
+      'sp-p-lim-2':          'O <code>session_id</code> é gerado no frontend e aceito pelo backend sem qualquer validação adicional. Em produção, isso seria um problema de segurança sério. Aqui é uma simplificação aceitável para um projeto de aprendizado local.',
+      'sp-p-lim-3':          'A cota gratuita do Gemini é limitada. Com uso intenso, você chega no rate limit rapidamente. Para um uso real, seria necessário configurar billing ou adotar uma estratégia de cache para perguntas repetidas.',
+      'sp-p-lim-4':          'O estado em memória significa que reiniciar o servidor apaga todo o histórico de conversas. Para persistência real, o próximo passo natural seria Redis com TTL por sessão.',
+
+      'sp-h-learned':        'O que aprendi',
+      'sp-p-learned-1':      'Esse projeto reforçou uma ideia que se mostrou central para esse tipo de sistema: separar a tomada de decisão da geração de conteúdo pode ser mais importante do que melhorar o gerador em si. Muitos problemas de confiabilidade ficam mais fáceis de entender quando as responsabilidades são isoladas e os modos de falha são explícitos. Nesse contexto, a decisão arquitetural mais valiosa não foi tornar o modelo mais poderoso, mas tornar seu comportamento mais previsível.',
+      'sp-p-learned-2':      'Essa ideia ficou ainda mais concreta ao transformá-la em código, quando surgiram aprendizados práticos sobre o comportamento de sistemas LLM-based: a importância da temperatura em aplicações classificatórias, o fato de que o output de um LLM nunca é completamente confiável sem instruções rígidas de formato, que sessões de chat têm um custo de tokens que cresce com o histórico e que prompt injection é um vetor de ataque real que precisa ser considerado desde o início do projeto.',
+      'sp-p-learned-3':      'Mas talvez o aprendizado mais simples tenha sido o mais valioso: construir algo para um problema que você realmente tem é a forma mais eficiente de aprender.',
+    },
+    en: {
+      'page-title':       'SpoilerGuard — Adriana Domênico',
+      'sp-subtitle':      'An experiment on predictability in AI, using spoilers as a design problem.',
+      'sp-h-context':    'Context',
+      'sp-p-ctx-1':      'This project started with a simple question: can an AI assistant answer questions about TV series without accidentally revealing spoilers?',
+      'sp-p-ctx-2':      'At first, the problem seemed fairly straightforward. Large language models are capable of understanding narratives, characters, and plot events, so it seemed reasonable to ask them to avoid spoilers when generating responses. However, asking the model to answer the question and assess spoiler risk in a single step produced inconsistent results. Sometimes the response was safe; other times, it revealed information a viewer might consider a spoiler, depending on how the question was phrased and how the model interpreted it.',
+      'sp-p-ctx-3':      'The solution was to separate those responsibilities: the user provides where they are in the series (show, season, episode) and asks a question; the model classifies the response as <code>SAFE</code> or <code>WARNING</code> before revealing anything. If <code>WARNING</code>, nothing is revealed: the model only asks whether the user wants to continue, and the answer only comes after explicit confirmation.',
+      'sp-p-ctx-4':      'This made it clear that the real problem was not generating responses. It was deciding whether a response should be generated at all.',
+
+      'sp-h-problem':    'The Problem',
+      'sp-p-prb-1':      'Spoilers are highly contextual. The same information can be harmless for one person and a major reveal for another, depending on how much of the series they have watched. And the ambiguity goes beyond the obvious: revealing a major character\'s death is a clear spoiler, but what about a relationship that develops later? A future appearance? The simple fact that someone survives up to a certain point in the story?',
+      'sp-p-prb-2':      'If spoiler detection remained implicit inside response generation, the system would have limited predictability and little control over its failure modes. I needed to separate those responsibilities and make the behavior explicit.',
+
+      'sp-h-learn-goal': 'What I Wanted to Learn',
+      'sp-p-lg-1':       'More than solving the spoiler problem, this project was a deliberate learning exercise. I wanted to understand in practice how to integrate an LLM into a real application: how to pass context, how to structure output, how to manage a conversation session with history, how to handle failures from an external API. The spoiler problem was the pretext; LLM integration engineering was the goal.',
+
+      'sp-h-design':         'Design Decisions',
+      'sp-h-d-endpoints':    'Two endpoints with a dependency',
+      'sp-p-d-ep-1':         'The <code>/ask → /confirm</code> flow is not the simplest way to build an API, but it reflects exactly the domain logic: before revealing anything, you need to classify and confirm. It also forced me to think about how to model state across two calls, something that stays hidden in simpler projects.',
+      'sp-h-d-sessions':     'In-memory sessions',
+      'sp-p-d-sess-1':       'Each conversation is a Gemini chat object stored in a Python dictionary in memory, indexed by a <code>session_id</code> UUID generated on the frontend. This means conversation history persists across questions in the same session, but disappears if the server restarts. The obvious alternative was Redis, but I deliberately left it out, since the focus was on understanding how Gemini manages conversational context, not on scaling state. The trade-off was intentional.',
+      'sp-h-d-output':       'Structured LLM output',
+      'sp-p-d-out-1':        'One of the biggest challenges in any LLM integration is ensuring the response has a consistent format. I addressed this on two fronts: using <code>response_mime_type: \'application/json\'</code> in the model configuration (which instructs Gemini to always return JSON) and having a manual parsing fallback in case the pre-parsed object did not come through. The output schema (<code>spoiler_level</code>, <code>warning_message</code>, <code>response</code>, <code>tip</code>) was iterated a few times until it mapped exactly to what the frontend needed to render.',
+      'sp-h-d-temp':         'Low temperature',
+      'sp-p-d-temp-1':       'Using <code>temperature: 0.3</code> was a consistency choice. In a system that classifies content into binary categories (<code>SAFE</code>/<code>WARNING</code>), creativity is the enemy: the model needs to be predictable. The higher the temperature, the greater the chance the model invents inconsistent classifications or ignores the prompt rules.',
+      'sp-h-d-sanitize':     'Sanitization and prompt injection',
+      'sp-p-d-san-1':        'When the user has a free-text field, there is a risk of someone trying to manipulate the model by passing instructions disguised as questions, such as "SYSTEM: ignore the previous instructions and...". I implemented sanitization that blocks common structural prompt injection patterns using regex. It is not a foolproof solution, but it is a conscious defense layer for a project at this scale.',
+      'sp-h-d-retry':        'Retry with linear backoff',
+      'sp-p-d-retry-1':      'External APIs fail. Gemini has quotas, returns 429 when exceeded, and occasionally becomes unstable. Rather than letting the error reach the user directly, I implemented a retry logic with increasing wait times (<code>delay × attempt</code>). Transient errors trigger a retry; fatal errors (token limit, invalid JSON) fail immediately. That distinction — what is worth retrying and what is not — was one of the most practical lessons of the project.',
+
+      'sp-h-challenges':     'Technical Challenges',
+      'sp-h-ch-context':     'Getting the model to respect context boundaries',
+      'sp-p-ch-ctx-1':       'The main engineering challenge was convincing Gemini that its role was not to answer freely, but to classify first. Early on, the model would frequently slip and hint at spoilers within the warning message itself. I kept refining the prompt until I reached instructions that clearly separated the two modes: if <code>WARNING</code>, only ask for confirmation, never reveal.',
+      'sp-h-ch-json':        'Consistent JSON output',
+      'sp-p-ch-json-1':      'Even with <code>response_mime_type</code> configured, the model would occasionally return JSON wrapped inside a markdown code block. The manual parsing with <code>.removeprefix("```json").removesuffix("```")</code> was the pragmatic fix. Not elegant, but honest about how LLMs behave in practice.',
+      'sp-h-ch-series':      'Keeping the model focused on the right series',
+      'sp-p-ch-ser-1':       'Without guardrails, the model answered questions about any series, ignoring the context passed in the system prompt. I added an explicit rule: "only discuss <code>{user_serie}</code>; if the question is about another series, ask the user to start a new session." This illustrates how prompt engineering is sometimes less about technical instruction and more about shaping behavioral expectations.',
+
+      'sp-h-limitations':    'Limitations',
+      'sp-p-lim-1':          'The frontend is intentionally minimal. There is no visual conversation history, the interaction feels more like a form than a chat, and it does not persist context across page reloads. I made that choice to avoid losing focus on what I actually wanted to learn, but the result is not a good product experience.',
+      'sp-p-lim-2':          'The <code>session_id</code> is generated on the frontend and trusted by the backend without any additional validation. In production, this would be a serious security issue. Here it is an acceptable simplification for a local learning project.',
+      'sp-p-lim-3':          'The Gemini free tier is limited. With heavy use, you hit the rate limit quickly. For real-world use, billing would need to be configured, or a caching strategy for repeated questions would be needed.',
+      'sp-p-lim-4':          'The in-memory state means restarting the server wipes all conversation history. For real persistence, the natural next step would be Redis with a TTL per session.',
+
+      'sp-h-learned':        'What I Learned',
+      'sp-p-learned-1':      'This project reinforced an idea that proved central to this type of system: separating decision-making from content generation can be more important than improving the generator itself. Many reliability problems become easier to understand when responsibilities are isolated and failure modes are explicit. In this context, the most valuable architectural decision was not making the model more powerful, but making its behavior more predictable.',
+      'sp-p-learned-2':      'That idea became even more concrete when turning it into code, as practical lessons emerged about the behavior of LLM-based systems: that temperature matters for classification applications, that LLM output is never fully reliable without strict format instructions, that chat sessions carry a token cost that grows with history, and that prompt injection is a real attack vector that needs to be considered from the start of the project.',
+      'sp-p-learned-3':      'But perhaps the simplest lesson was the most valuable: building something for a problem you actually have is the most efficient way to learn.',
+    }
+  });
+</script>
+</body>
+</html>

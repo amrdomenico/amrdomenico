@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-M17970733W"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-M17970733W');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adriana Domênico</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23b5451b'/><text x='16' y='22' font-family='sans-serif' font-size='14' font-weight='600' fill='white' text-anchor='middle'>AD</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/base.css">
+  <link rel="stylesheet" href="assets/index.css">
+</head>
+<body>
+
+<!-- ── Site nav ── -->
+<div class="site-nav-wrapper"><header class="site-nav">
+  <nav class="site-nav-links">
+    <a href="#home" data-section="home" data-i18n="nav-home">Home</a>
+    <a href="#resume" data-section="resume" data-i18n="nav-resume">Currículo</a>
+  </nav>
+  <span class="lang-toggle">
+    <button class="btn-lang" data-lang="pt">🇧🇷</button>
+    <button class="btn-lang active" data-lang="en">🇺🇸</button>
+  </span>
+</header>
+</div>
+
+<!-- ══════════════════════════════
+     SECTION: HOME
+     ══════════════════════════════ -->
+<div id="section-home" class="page-section">
+  <main class="container">
+
+    <div class="hero">
+      <h1>Adriana Domênico</h1>
+      <p class="hero-subtitle" data-i18n="hero-subtitle-1">Desenvolvedora Backend em transição, com background em biologia, oncologia e proteômica.</p>
+      <p class="hero-subtitle" data-i18n="hero-subtitle-2">Hoje desenvolvo aplicações em Python com foco em APIs e integração de LLMs.</p>
+      <p class="hero-subtitle" data-i18n="hero-subtitle-3">Os projetos aqui são o registro mais honesto do que sei fazer até agora.</p>
+    </div>
+
+    <section>
+      <h2 class="section-label" data-i18n="home-selected-work">Trabalhos selecionados</h2>
+      <div class="card-grid">
+
+        <div class="card">
+          <h3><a href="projects/venom.html" data-i18n="proj-venom-title">Venom Annotation Pipeline</a></h3>
+          <p data-i18n="proj-venom-desc">Um pipeline que transforma a classificação manual de toxinas em um sistema reprodutível e auditável.</p>
+          <div class="card-stack">Python · Pandas · UniProt REST API · InterPro · openpyxl</div>
+        </div>
+
+        <div class="card">
+          <h3><a href="projects/spoiler.html" data-i18n="proj-spoiler-title">SpoilerGuard</a></h3>
+          <p data-i18n="proj-spoiler-desc">Um sistema LLM que responde perguntas sobre séries sem revelar o que o usuário ainda não assistiu.</p>
+          <div class="card-stack">Python · FastAPI · Pydantic · Gemini SDK · JavaScript · Prompt Engineering</div>
+        </div>
+
+        <div class="card">
+          <h3><a href="projects/todo.html" data-i18n="proj-todo-title">Agentic Todo List</a></h3>
+          <p data-i18n="proj-todo-desc">Frontend convencional e chat conversacional no mesmo app, integrados por uma LLM local.</p>
+          <div class="card-stack">Python · FastAPI · Pydantic · Local LLM · SQLite · JavaScript · HTML/CSS</div>
+        </div>
+
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <a class="footer-icon-link" href="https://github.com/amrdomenico" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+        GitHub
+      </a>
+      <a class="footer-icon-link" href="https://linkedin.com/in/amrdomenico" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+        LinkedIn
+      </a>
+    </footer>
+
+  </main>
+</div>
+
+<!-- ══════════════════════════════
+     SECTION: RESUME
+     ══════════════════════════════ -->
+<div id="section-resume" class="page-section" hidden>
+  <div class="resume-wrapper">
+
+    <main class="page">
+
+      <header class="resume-header">
+        <h1>Adriana Domênico</h1>
+        <div class="header-title" data-i18n="header-subtitle">Desenvolvedora Python | Backend &amp; IA Aplicada</div>
+        <div class="header-meta-row">
+          <div data-i18n="header-location">Bauru, SP &nbsp;·&nbsp; Presencial · Híbrido · Remoto</div>
+          <div class="resume-social-links">
+            <a class="resume-social-link" href="https://amrdomenico.github.io" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              amrdomenico.github.io
+            </a>
+            <a class="resume-social-link" href="https://linkedin.com/in/amrdomenico" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              /amrdomenico
+            </a>
+            <a class="resume-social-link" href="https://github.com/amrdomenico" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+              /amrdomenico
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <section class="section">
+        <h2 class="section-label" data-i18n="section-profile">Perfil</h2>
+        <p class="summary" data-i18n="summary">
+          Desenvolvedora com background analítico em biologia, atuando no desenvolvimento de aplicações de ponta a ponta com foco em arquitetura de APIs, pipelines de dados e integração de modelos de linguagem (LLMs). Migrei para programação para transformar problemas complexos em sistemas funcionais. Atualmente aprofundando SQL e CI/CD.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2 class="section-label" data-i18n="section-skills">Skills técnicas</h2>
+        <div class="skills-line">
+          <span class="skill-cat" data-i18n="skill-cat-backend">Backend</span>
+          Python · FastAPI · Pydantic · REST APIs · SQL
+          <span class="skill-cat" data-i18n="skill-cat-ai">AI &amp; Data</span>
+          LLMs · Prompt Engineering · Pandas · openpyxl
+          <span class="skill-cat" data-i18n="skill-cat-infra">Infra &amp; Tools</span>
+          Git · Linux · CI/CD
+          <span class="skill-cat" data-i18n="skill-cat-frontend">Frontend</span>
+          JavaScript · HTML/CSS
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-label" data-i18n="section-experience">Experiência</h2>
+
+        <div class="entry">
+          <div class="entry-header">
+            <div class="entry-title-group">
+              <div class="entry-role" data-i18n="exp1-role">Desenvolvedora Python &amp; AI</div>
+              <div class="entry-org" data-i18n="exp1-org">Projetos Próprios <span>· Remoto</span></div>
+            </div>
+            <div class="entry-date"><time datetime="2026-03">mar 2026</time> – <span data-i18n="label-current">atual</span></div>
+          </div>
+
+          <ul class="bullets">
+            <li data-i18n="proj1">Projetei e implementei pipeline de dados end-to-end para classificação automatizada de 129 classes de toxinas com integração a APIs REST externas e sistema de scoring ponderado, substituindo processo manual por sistema reprodutível e auditável.</li>
+            <li data-i18n="proj2">Desenvolvi aplicação LLM-based com pipeline de classificação em duas etapas antes da geração de resposta, implementando gerenciamento de sessão, retry com backoff linear e sanitização contra prompt injection.</li>
+            <li data-i18n="proj3">Desenvolvendo aplicação com dupla interface (frontend convencional + chat conversacional) integrada por LLM local rodando via Ollama. Backend com API REST e banco de dados concluídos.</li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <div class="entry-header">
+            <div class="entry-title-group">
+              <div class="entry-role" data-i18n="exp2-role">Freelancer — Design &amp; Marketing Digital</div>
+              <div class="entry-org" data-i18n="exp2-org">Autônoma <span>· Remoto</span></div>
+            </div>
+            <div class="entry-date"><time datetime="2024-01">jan 2024</time> – <span data-i18n="label-current">atual</span></div>
+          </div>
+          <ul class="bullets">
+            <li data-i18n="fl1">Converti formulário estático em aplicação web interativa após identificar fricção no fluxo de onboarding e abandono recorrente por clientes. Primeira decisão de produto orientada a comportamento do usuário.</li>
+            <li data-i18n="fl2">Gerenciei campanhas pagas para infoprodutos e micro SaaS com rastreamento via Meta Pixel e análise de comportamento de conversão.</li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <div class="entry-header">
+            <div class="entry-title-group">
+              <div class="entry-role" data-i18n="exp3-role">Estagiária em Análise de Dados</div>
+              <div class="entry-org" data-i18n="exp3-org">EEL-USP <span>· Remoto</span></div>
+            </div>
+            <div class="entry-date"><time datetime="2023-10">out 2023</time> – <time datetime="2024-02">fev 2024</time></div>
+          </div>
+          <ul class="bullets">
+            <li data-i18n="da1">Realizei limpeza e normalização de bases de dados para modelagem estatística.</li>
+            <li data-i18n="da2">Executei análises multivariadas (PCA e regressão) para identificação de correlações em dados biológicos experimentais.</li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <div class="entry-header">
+            <div class="entry-title-group">
+              <div class="entry-role" data-i18n="exp4-role">Bióloga Residente — Oncologia</div>
+              <div class="entry-org" data-i18n="exp4-org">Hospital Amaral Carvalho <span>· Jaú, SP</span></div>
+            </div>
+            <div class="entry-date"><time datetime="2022">2022</time> – <time datetime="2024">2024</time></div>
+          </div>
+          <ul class="bullets">
+            <li data-i18n="bio1">Processei dados genômicos por NGS para pareamento HLA em protocolos críticos de transplante de medula óssea.</li>
+            <li data-i18n="bio2">Processei e mensurei quantitativamente dados imunológicos por citometria de fluxo e dados moleculares por PCR em diagnósticos de neoplasias e monitoramento de doenças residuais.</li>
+            <li data-i18n="bio3">Atuei em ambiente hospitalar de alta complexidade sob protocolos GLP e exigência rigorosa de confiabilidade analítica.</li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <div class="entry-header">
+            <div class="entry-title-group">
+              <div class="entry-role" data-i18n="exp5-role">Especialista em Proteômica</div>
+              <div class="entry-org" data-i18n="exp5-org">CEVAP/UNESP <span>· Botucatu, SP</span></div>
+            </div>
+            <div class="entry-date"><time datetime="2020">2020</time> – <time datetime="2021">2021</time></div>
+          </div>
+          <ul class="bullets">
+            <li data-i18n="prot1">Realizei análise computacional de dados de espectrometria de massas (PatternLab for Proteomics) e cromatografia líquida (FPLC) para caracterização proteômica.</li>
+            <li data-i18n="prot2">Dominei completamente a cadeia do dado: da preparação da amostra à interpretação estatística, base direta do Venom Annotation Pipeline.</li>
+          </ul>
+        </div>
+
+      </section>
+
+      <section class="section">
+        <h2 class="section-label" data-i18n="section-education">Formação</h2>
+        <table class="edu-table">
+          <tr>
+            <td class="edu-period"><time datetime="2025">2025</time> – <span data-i18n="label-current">atual</span></td>
+            <td><span class="edu-degree" data-i18n="edu-deg1">Bacharelado em Ciências de Dados</span><span class="edu-inst">— UNIVESP</span></td>
+          </tr>
+          <tr>
+            <td class="edu-period"><time datetime="2022">2022</time> – <time datetime="2024">2024</time></td>
+            <td><span class="edu-degree" data-i18n="edu-deg2">Residência Multiprofissional — Oncologia e Biologia do Câncer</span><span class="edu-inst">— Hospital Amaral Carvalho</span></td>
+          </tr>
+          <tr>
+            <td class="edu-period"><time datetime="2020">2020</time> – <time datetime="2021">2021</time></td>
+            <td><span class="edu-degree" data-i18n="edu-deg3">Pós-graduação Lato Sensu — Proteômica Clínica</span><span class="edu-inst">— UNESP Botucatu</span></td>
+          </tr>
+          <tr>
+            <td class="edu-period"><time datetime="2012">2012</time> – <time datetime="2017">2017</time></td>
+            <td><span class="edu-degree" data-i18n="edu-deg4">Licenciatura em Ciências Biológicas</span><span class="edu-inst">— UNESP Bauru</span></td>
+          </tr>
+        </table>
+      </section>
+
+      <div class="footer-row">
+        <div class="lang-badge">
+          <div><span class="lang-name" data-i18n="lang-pt-name">Português</span> <span data-i18n="lang-pt-level">(Nativo)</span></div>
+          <div><span class="lang-name" data-i18n="lang-en-name">Inglês</span> <span data-i18n="lang-en-level">(Avançado)</span></div>
+        </div>
+        <div class="footer-location">Bauru, SP</div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+  initI18n({
+    pt: {
+      'page-title':         'Adriana Domênico',
+      'hero-subtitle-1':    'Desenvolvedora Backend em transição, com background em biologia, oncologia e proteômica.',
+      'hero-subtitle-2':    'Hoje desenvolvo aplicações em Python com foco em APIs e integração de LLMs.',
+      'hero-subtitle-3':    'Os projetos aqui são o registro mais honesto do que sei fazer até agora.',
+      'home-selected-work': 'Trabalhos selecionados',
+      'proj-venom-title':   'Venom Annotation Pipeline',
+      'proj-venom-desc':    'Um pipeline que transforma a classificação manual de toxinas em um sistema reprodutível e auditável.',
+      'proj-spoiler-title': 'SpoilerGuard',
+      'proj-spoiler-desc':  'Um sistema LLM que responde perguntas sobre séries sem revelar o que o usuário ainda não assistiu.',
+      'proj-todo-title':    'Agentic Todo List',
+      'proj-todo-desc':     'Frontend convencional e chat conversacional no mesmo app, integrados por uma LLM local.',
+      'label-current':      'atual',
+      // Resume
+      'header-subtitle':    'Desenvolvedora Python | Backend &amp; IA Aplicada',
+      'header-location':    'Bauru, SP &nbsp;·&nbsp; Presencial · Híbrido · Remoto',
+      'section-profile':    'Perfil',
+      'section-skills':     'Skills técnicas',
+      'section-experience': 'Experiência',
+      'section-education':  'Formação',
+      'summary': 'Desenvolvedora com background analítico em biologia, atuando no desenvolvimento de aplicações de ponta a ponta com foco em arquitetura de APIs, pipelines de dados e integração de modelos de linguagem (LLMs). Migrei para programação para transformar problemas complexos em sistemas funcionais. Atualmente aprofundando SQL e CI/CD.',
+      'skill-cat-backend':  'Backend',
+      'skill-cat-ai':       'AI &amp; Data',
+      'skill-cat-infra':    'Infra &amp; Tools',
+      'skill-cat-frontend': 'Frontend',
+      'exp1-role': 'Desenvolvedora Python &amp; AI',
+      'exp1-org':  'Projetos Próprios <span>· Remoto</span>',
+      'exp2-role': 'Freelancer — Design &amp; Marketing Digital',
+      'exp2-org':  'Autônoma <span>· Remoto</span>',
+      'exp3-role': 'Estagiária em Análise de Dados',
+      'exp3-org':  'EEL-USP <span>· Remoto</span>',
+      'exp4-role': 'Bióloga Residente — Oncologia',
+      'exp4-org':  'Hospital Amaral Carvalho <span>· Jaú, SP</span>',
+      'exp5-role': 'Especialista em Proteômica',
+      'exp5-org':  'CEVAP/UNESP <span>· Botucatu, SP</span>',
+      'proj1': 'Projetei e implementei pipeline de dados end-to-end para classificação automatizada de 129 classes de toxinas com integração a APIs REST externas e sistema de scoring ponderado, substituindo processo manual por sistema reprodutível e auditável.',
+      'proj2': 'Desenvolvi aplicação LLM-based com pipeline de classificação em duas etapas antes da geração de resposta, implementando gerenciamento de sessão, retry com backoff linear e sanitização contra prompt injection.',
+      'proj3': 'Desenvolvendo aplicação com dupla interface (frontend convencional + chat conversacional) integrada por LLM local rodando via Ollama. Backend com API REST e banco de dados concluídos.',
+      'fl1': 'Converti formulário estático em aplicação web interativa após identificar fricção no fluxo de onboarding e abandono recorrente por clientes. Primeira decisão de produto orientada a comportamento do usuário.',
+      'fl2': 'Gerenciei campanhas pagas para infoprodutos e micro SaaS com rastreamento via Meta Pixel e análise de comportamento de conversão.',
+      'da1': 'Realizei limpeza e normalização de bases de dados para modelagem estatística.',
+      'da2': 'Executei análises multivariadas (PCA e regressão) para identificação de correlações em dados biológicos experimentais.',
+      'bio1': 'Processei dados genômicos por NGS para pareamento HLA em protocolos críticos de transplante de medula óssea.',
+      'bio2': 'Processei e mensurei quantitativamente dados imunológicos por citometria de fluxo e dados moleculares por PCR em diagnósticos de neoplasias e monitoramento de doenças residuais.',
+      'bio3': 'Atuei em ambiente hospitalar de alta complexidade sob protocolos GLP e exigência rigorosa de confiabilidade analítica.',
+      'prot1': 'Realizei análise computacional de dados de espectrometria de massas (PatternLab for Proteomics) e cromatografia líquida (FPLC) para caracterização proteômica.',
+      'prot2': 'Dominei completamente a cadeia do dado: da preparação da amostra à interpretação estatística, base direta do Venom Annotation Pipeline.',
+      'edu-deg1': 'Bacharelado em Ciências de Dados',
+      'edu-deg2': 'Residência Multiprofissional — Oncologia e Biologia do Câncer',
+      'edu-deg3': 'Pós-graduação Lato Sensu — Proteômica Clínica',
+      'edu-deg4': 'Licenciatura em Ciências Biológicas',
+      'lang-pt-name':  'Português',
+      'lang-pt-level': '(Nativo)',
+      'lang-en-name':  'Inglês',
+      'lang-en-level': '(Avançado)',
+    },
+    en: {
+      'page-title':         'Adriana Domênico',
+      'hero-subtitle-1':    'Backend developer in transition, with a background in biology, oncology, and proteomics.',
+      'hero-subtitle-2':    'I build Python applications focused on APIs and LLM integration.',
+      'hero-subtitle-3':    'The projects here are the most honest record of what I can do so far.',
+      'home-selected-work': 'Selected work',
+      'proj-venom-title':   'Venom Annotation Pipeline',
+      'proj-venom-desc':    'A pipeline that transforms manual toxin classification into a reproducible and auditable system.',
+      'proj-spoiler-title': 'SpoilerGuard',
+      'proj-spoiler-desc':  'An LLM system that answers questions about TV series without spoiling what the user hasn\'t seen.',
+      'proj-todo-title':    'Agentic Todo List',
+      'proj-todo-desc':     'Conventional frontend and conversational chat in the same app, integrated by a local LLM.',
+      'label-current':      'present',
+      // Resume
+      'header-subtitle':    'Python Developer | Backend &amp; AI Applications',
+      'header-location':    'Bauru, SP &nbsp;·&nbsp; On-site · Hybrid · Remote',
+      'section-profile':    'Profile',
+      'section-skills':     'Technical Skills',
+      'section-experience': 'Experience',
+      'section-education':  'Education',
+      'summary': 'Developer with an analytical background in biology, working on end-to-end application development with a focus on API architecture, data pipelines, and LLM integration. I transitioned to programming to turn complex problems into functional systems. Currently deepening SQL and CI/CD.',
+      'skill-cat-backend':  'Backend',
+      'skill-cat-ai':       'AI &amp; Data',
+      'skill-cat-infra':    'Infra &amp; Tools',
+      'skill-cat-frontend': 'Frontend',
+      'exp1-role': 'Python &amp; AI Developer',
+      'exp1-org':  'Personal Projects <span>· Remote</span>',
+      'exp2-role': 'Freelancer — Design &amp; Digital Marketing',
+      'exp2-org':  'Self-employed <span>· Remote</span>',
+      'exp3-role': 'Data Analysis Intern',
+      'exp3-org':  'EEL-USP <span>· Remote</span>',
+      'exp4-role': 'Resident Biologist — Oncology',
+      'exp4-org':  'Hospital Amaral Carvalho <span>· Jaú, SP</span>',
+      'exp5-role': 'Proteomics Specialist',
+      'exp5-org':  'CEVAP/UNESP <span>· Botucatu, SP</span>',
+      'proj1': 'Designed and implemented an end-to-end data pipeline for automated classification of 129 toxin classes with REST API integration and a weighted scoring system, replacing a manual process with a reproducible and auditable system.',
+      'proj2': 'Developed an LLM-based application with a two-step classification pipeline before response generation, implementing session management, linear backoff retry, and prompt injection sanitization.',
+      'proj3': 'Developing an application with dual interface (conventional frontend + conversational chat) integrated by a local LLM running via Ollama. Backend with REST API and database completed.',
+      'fl1': 'Converted a static form into an interactive web application after identifying friction in the onboarding flow and recurring client drop-off. First product decision driven by user behavior.',
+      'fl2': 'Managed paid campaigns for info-products and micro SaaS with Meta Pixel tracking and conversion behavior analysis.',
+      'da1': 'Performed data cleaning and normalization pipelines for statistical modeling.',
+      'da2': 'Ran multivariate analyses (PCA and regression) to identify correlations in experimental biological data.',
+      'bio1': 'Processed genomic data via NGS for HLA matching in critical bone marrow transplant protocols.',
+      'bio2': 'Quantitatively processed and measured immunological data by flow cytometry and molecular data by PCR in neoplasm diagnostics and residual disease monitoring.',
+      'bio3': 'Operated in a high-complexity hospital environment under GLP protocols and strict analytical reliability requirements.',
+      'prot1': 'Performed computational analysis of mass spectrometry data (PatternLab for Proteomics) and liquid chromatography (FPLC) for proteomic characterization.',
+      'prot2': 'Mastered the complete data chain: from sample preparation to statistical interpretation, directly establishing the Venom Annotation Pipeline.',
+      'edu-deg1': 'B.Sc. in Data Science',
+      'edu-deg2': 'Multiprofessional Residency — Oncology and Cancer Biology',
+      'edu-deg3': 'Postgraduate — Clinical Proteomics',
+      'edu-deg4': 'B.Sc. in Biological Sciences',
+      'lang-pt-name':  'Portuguese',
+      'lang-pt-level': '(Native)',
+      'lang-en-name':  'English',
+      'lang-en-level': '(Advanced)',
+    }
+  });
+
+  // Section routing — SPA behaviour for index.html only
+  (function() {
+    function showSection(id) {
+      document.querySelectorAll('.page-section').forEach(function(s) { s.hidden = true; });
+      const target = document.getElementById('section-' + id);
+      if (target) target.hidden = false;
+      document.querySelectorAll('.site-nav-links a[data-section]').forEach(function(a) {
+        a.classList.toggle('active', a.dataset.section === id);
+      });
+      window.scrollTo(0, 0);
+    }
+
+    function handleHash() {
+      showSection(location.hash.replace('#', '') || 'home');
+    }
+
+    window.addEventListener('hashchange', handleHash);
+    handleHash();
+  })();
+</script>
+</body>
+</html>
